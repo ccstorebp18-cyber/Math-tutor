@@ -1,3 +1,5 @@
+alert("JavaScript aktif");
+
 // =======================
 // PINDAH HALAMAN
 // =======================
