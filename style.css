@@ -32,6 +32,16 @@ button {
   background: white;
   border-radius: 10px;
   border: 1px solid #ccc;
+
+  /* penting untuk touch/stylus */
+  touch-action: none;
+}
+
+
+#canvas {
+  width: 100%;
+  height: calc(100% - 100px);
+  background: white;
   touch-action: none;
 }
 
