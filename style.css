@@ -585,6 +585,114 @@ input {
 }
 
 /* ---------------------------------------------------------
+   Review page (pembahasan)
+--------------------------------------------------------- */
+.review-title-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.review-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+}
+.review-subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+.review-body {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-item {
+  background: var(--white);
+  border: 1px solid var(--paper-line);
+  border-left: 4px solid var(--paper-line);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+}
+.review-item.review-correct { border-left-color: var(--pencil); }
+.review-item.review-wrong { border-left-color: var(--red-ink); }
+
+.review-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.review-number {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.review-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+.review-badge-correct {
+  background: var(--pencil-tint);
+  color: var(--pencil-dark);
+}
+.review-badge-wrong {
+  background: var(--red-ink-tint);
+  color: var(--red-ink);
+}
+
+.review-question {
+  font-family: var(--font-mono);
+  font-size: 15.5px;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+
+.review-answers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px dashed var(--paper-line);
+  padding-top: 12px;
+}
+.review-answer-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+.review-answer-label {
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.review-answer-value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-align: right;
+  word-break: break-word;
+}
+.review-answer-value.review-answer-wrong {
+  color: var(--red-ink);
+  text-decoration: line-through;
+  text-decoration-color: var(--red-ink);
+  opacity: 0.85;
+}
+.review-answer-value.review-answer-correct {
+  color: var(--pencil-dark);
+}
+
+/* ---------------------------------------------------------
    Chat page
 --------------------------------------------------------- */
 #page-chat { display: none; flex-direction: column; height: 100vh; }
