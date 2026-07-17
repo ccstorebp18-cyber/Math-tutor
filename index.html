@@ -1,1 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Math Tutor AI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 
+<body>
+
+<div class="container">
+
+  <div class="top">
+    <span>Soal 1/10</span>
+    <button onclick="openPaper()">📄</button>
+    <span>⏱ <span id="timer">00:00</span></span>
+  </div>
+
+  <h2>Hitung nilai x:</h2>
+  <h1>2x + 5 = 15</h1>
+
+  <h3>Jawaban:</h3>
+  <textarea placeholder="Tulis jawaban kamu di sini..."></textarea>
+
+  <button class="next">Selanjutnya</button>
+
+</div>
+
+
+<div id="paper" class="paper">
+
+  <button class="close" onclick="closePaper()">✕</button>
+
+  <h3>Kertas Coretan</h3>
+
+  <canvas id="canvas"></canvas>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
