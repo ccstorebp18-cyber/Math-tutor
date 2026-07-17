@@ -7,54 +7,185 @@
 
 <body>
 
-<div id="home" class="container">
-  <h1>Math Tutor AI</h1>
+<!-- HALAMAN UTAMA -->
+<div id="home" class="page">
 
-  <button onclick="startLesson()">Mulai Belajar</button>
-  <button>Chat AI</button>
-  <button>Riwayat</button>
+<h1>📚 Math Tutor AI</h1>
+
+<button onclick="startTest()">Tes Kemampuan</button>
+<button onclick="startLesson()">Mulai Belajar</button>
+<button onclick="showChat()">💬 Chat AI</button>
+
 </div>
 
 
-<div id="lesson" class="container" style="display:none">
 
-  <div class="top">
-    <span id="questionNumber">Soal 1/10</span>
+<!-- TES KEMAMPUAN -->
+<div id="test" class="page hidden">
 
-    <button onclick="openPaper()">📄</button>
+<h2>Tes Kemampuan</h2>
 
-    <span>⏱ <span id="timer">00:00</span></span>
-  </div>
+<p id="testQuestion">
+Berapa hasil dari 5 + 7?
+</p>
 
+<canvas id="testCanvas"></canvas>
 
-<h2 id="questionText">Hitung nilai x:</h2>
-<h1 id="question">2x + 5 = 15</h1>
+<button onclick="nextTest()">Selanjutnya</button>
 
-
-  <h3>Jawaban:</h3>
-
-  <canvas id="answerCanvas"></canvas>
-
-
-  <button class="next" onclick="nextQuestion()">Selanjutnya</button>
 </div>
 
 
 
-<div id="paper" class="paper">
 
-  <button class="close" onclick="closePaper()">✕</button>
+<!-- BELAJAR -->
+<div id="lesson" class="page hidden">
 
-  <h3>Kertas Coretan</h3>
 
-  <div class="tools">
-    <button onclick="pen()">✏️</button>
-    <button onclick="eraser()">🧽</button>
-  </div>
+<div class="top">
 
-  <canvas id="canvas"></canvas>
+<span id="number">
+Soal 1/10
+</span>
+
+
+<button onclick="openPaper()">📄</button>
+
+
+<span>
+⏱ <span id="timer">00:00</span>
+</span>
 
 </div>
+
+
+
+<h2 id="questionText">
+Hitung nilai x:
+</h2>
+
+<h1 id="question">
+2x + 5 = 15
+</h1>
+
+
+<h3>Jawaban:</h3>
+
+
+<canvas id="answerCanvas"></canvas>
+
+
+
+<button onclick="nextQuestion()">
+Selanjutnya
+</button>
+
+
+</div>
+
+
+
+
+
+<!-- KERTAS CORETAN -->
+
+<div id="paper" class="paper hidden">
+
+
+<button class="close" onclick="closePaper()">
+✕
+</button>
+
+
+<h2>Kertas Coretan</h2>
+
+
+<div class="tools">
+
+<button onclick="setPen()">
+✏️
+</button>
+
+
+<button onclick="setEraser()">
+🧽
+</button>
+
+</div>
+
+
+<canvas id="paperCanvas"></canvas>
+
+
+</div>
+
+
+
+
+
+<!-- HASIL -->
+
+<div id="result" class="page hidden">
+
+
+<h1>Hasil Belajar</h1>
+
+
+<h2 id="score">
+Nilai: -
+</h2>
+
+
+<p id="feedback">
+Saran AI akan muncul di sini.
+</p>
+
+
+<button>
+🏠 Halaman Utama
+</button>
+
+
+<button onclick="showChat()">
+💬 Chat AI
+</button>
+
+
+<button onclick="startLesson()">
+▶ Lanjut Belajar
+</button>
+
+
+</div>
+
+
+
+
+
+
+<!-- CHAT -->
+
+<div id="chat" class="page hidden">
+
+
+<h1>Chat AI</h1>
+
+
+<textarea placeholder="Tanyakan sesuatu..."></textarea>
+
+
+<button>
+Kirim
+</button>
+
+
+<button onclick="goHome()">
+Kembali
+</button>
+
+
+</div>
+
 
 
 <script src="script.js"></script>
