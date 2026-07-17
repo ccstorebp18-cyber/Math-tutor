@@ -1,9 +1,6 @@
 // PINDAH HALAMAN
 
-function startLesson() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("lesson").style.display = "block";
-}
+
 
 
 // TIMER
@@ -30,9 +27,7 @@ setInterval(() => {
 
 // KERTAS CORETAN
 
-function openPaper() {
-  document.getElementById("paper").style.display = "block";
-}
+
 
 
 function closePaper() {
@@ -120,8 +115,28 @@ function setupCanvas(id) {
 }
 
 
+let answerReady = false;
+let paperReady = false;
 
-// aktifkan kedua kertas
 
-setupCanvas("canvas");
-setupCanvas("answerCanvas");
+// saat mulai belajar
+function startLesson() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("lesson").style.display = "block";
+
+  if (!answerReady) {
+    setupCanvas("answerCanvas");
+    answerReady = true;
+  }
+}
+
+
+// saat buka kertas
+function openPaper() {
+  document.getElementById("paper").style.display = "block";
+
+  if (!paperReady) {
+    setupCanvas("canvas");
+    paperReady = true;
+  }
+}
