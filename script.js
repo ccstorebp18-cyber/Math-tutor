@@ -767,15 +767,21 @@
     toolEraser.classList.toggle("active", tool === "eraser");
   }
 
+  // Hanya stylus (pointerType 'pen') yang boleh menggambar.
+  // Jari (touch) dan mouse diabaikan sepenuhnya supaya tidak
+  // mengganggu scroll/gesture dan mencegah coretan tidak sengaja.
+  function isAllowedInput(e) {
+    return e.pointerType === "pen";
+  }
+
   function getPos(e) {
     const rect = scratchCanvas.getBoundingClientRect();
-    if (e.touches && e.touches[0]) {
-      return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
-    }
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }
 
   function startDraw(e) {
+    if (!isAllowedInput(e)) return;
+    e.preventDefault();
     drawing = true;
     const pos = getPos(e);
     lastX = pos.x;
@@ -783,6 +789,7 @@
   }
 
   function draw(e) {
+    if (!isAllowedInput(e)) return;
     if (!drawing) return;
     e.preventDefault();
     const pos = getPos(e);
@@ -805,17 +812,17 @@
     lastY = pos.y;
   }
 
-  function endDraw() {
+  function endDraw(e) {
+    if (e && !isAllowedInput(e)) return;
     drawing = false;
   }
 
-  scratchCanvas.addEventListener("mousedown", startDraw);
-  scratchCanvas.addEventListener("mousemove", draw);
-  window.addEventListener("mouseup", endDraw);
-
-  scratchCanvas.addEventListener("touchstart", startDraw, { passive: true });
-  scratchCanvas.addEventListener("touchmove", draw, { passive: false });
-  scratchCanvas.addEventListener("touchend", endDraw);
+  // touch-action di CSS (#scratch-canvas) membiarkan jari tetap bisa
+  // scroll/gesture normal; pointer events di bawah hanya bereaksi ke pen.
+  scratchCanvas.addEventListener("pointerdown", startDraw);
+  scratchCanvas.addEventListener("pointermove", draw);
+  window.addEventListener("pointerup", endDraw);
+  window.addEventListener("pointercancel", endDraw);
 
   window.addEventListener("resize", () => {
     if (!scratchOverlay.hidden) resizeCanvas();
