@@ -1,4 +1,5 @@
 alert("JS jalan");
+
 // PINDAH HALAMAN
 
 function startLesson() {
