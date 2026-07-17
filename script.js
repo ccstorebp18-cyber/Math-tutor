@@ -140,3 +140,52 @@ function openPaper() {
     paperReady = true;
   }
 }
+let currentQuestion = 1;
+
+
+let questions = [
+  {
+    text: "Hitung nilai x:",
+    question: "2x + 5 = 15"
+  },
+  {
+    text: "Hitung nilai y:",
+    question: "3y + 4 = 19"
+  },
+  {
+    text: "Hitung nilai a:",
+    question: "5a - 10 = 20"
+  }
+];
+
+
+function nextQuestion() {
+
+  currentQuestion++;
+
+
+  if (currentQuestion > questions.length) {
+    alert("Sesi selesai!");
+    return;
+  }
+
+
+  document.getElementById("questionNumber").innerText =
+    "Soal " + currentQuestion + "/" + questions.length;
+
+
+  document.getElementById("questionText").innerText =
+    questions[currentQuestion - 1].text;
+
+
+  document.getElementById("question").innerText =
+    questions[currentQuestion - 1].question;
+
+
+  // hapus jawaban lama
+  let canvas = document.getElementById("answerCanvas");
+  let ctx = canvas.getContext("2d");
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+}
