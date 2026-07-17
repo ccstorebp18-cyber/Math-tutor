@@ -7,23 +7,39 @@
 
 <body>
 
-<div class="container">
+<div id="home" class="container">
+  <h1>Math Tutor AI</h1>
+
+  <button onclick="startLesson()">Mulai Belajar</button>
+  <button>Chat AI</button>
+  <button>Riwayat</button>
+</div>
+
+
+<div id="lesson" class="container" style="display:none">
 
   <div class="top">
     <span>Soal 1/10</span>
+
     <button onclick="openPaper()">📄</button>
+
     <span>⏱ <span id="timer">00:00</span></span>
   </div>
+
 
   <h2>Hitung nilai x:</h2>
   <h1>2x + 5 = 15</h1>
 
+
   <h3>Jawaban:</h3>
-  <textarea placeholder="Tulis jawaban kamu di sini..."></textarea>
+
+  <canvas id="answerCanvas"></canvas>
+
 
   <button class="next">Selanjutnya</button>
 
 </div>
+
 
 
 <div id="paper" class="paper">
@@ -31,6 +47,11 @@
   <button class="close" onclick="closePaper()">✕</button>
 
   <h3>Kertas Coretan</h3>
+
+  <div class="tools">
+    <button onclick="pen()">✏️</button>
+    <button onclick="eraser()">🧽</button>
+  </div>
 
   <canvas id="canvas"></canvas>
 
