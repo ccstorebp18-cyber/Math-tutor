@@ -1,191 +1,177 @@
+// =======================
 // PINDAH HALAMAN
+// =======================
 
-
-
-
-// TIMER
-
-let seconds = 0;
-
-setInterval(() => {
-
-  if (document.getElementById("lesson").style.display == "block") {
-
-    seconds++;
-
-    let min = Math.floor(seconds / 60);
-    let sec = seconds % 60;
-
-    document.getElementById("timer").innerText =
-      String(min).padStart(2, "0") + ":" +
-      String(sec).padStart(2, "0");
-  }
-
-}, 1000);
-
-
-
-// KERTAS CORETAN
-
-
-
-
-function closePaper() {
-  document.getElementById("paper").style.display = "none";
-}
-
-
-
-// FUNGSI GAMBAR
-
-let mode = "pen";
-
-function pen() {
-  mode = "pen";
-}
-
-
-function eraser() {
-  mode = "eraser";
-}
-
-
-
-function setupCanvas(id) {
-
-  let canvas = document.getElementById(id);
-  let ctx = canvas.getContext("2d");
-
-
-  function resize() {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-}
-
-  resize();
-
-  window.addEventListener("resize", resize);
-
-
-  let drawing = false;
-
-
-  canvas.addEventListener("pointerdown", (e) => {
-
-    drawing = true;
-
-    ctx.beginPath();
-    ctx.moveTo(e.offsetX, e.offsetY);
-
+function hideAll() {
+  document.querySelectorAll(".page").forEach(e => {
+    e.classList.add("hidden");
   });
-
-
-  canvas.addEventListener("pointermove", (e) => {
-
-    if (!drawing) return;
-
-
-    if (mode == "pen") {
-
-      ctx.globalCompositeOperation = "source-over";
-      ctx.lineWidth = 3;
-
-    } else {
-
-      ctx.globalCompositeOperation = "destination-out";
-      ctx.lineWidth = 20;
-
-    }
-
-
-    ctx.lineCap = "round";
-
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.stroke();
-
-  });
-
-
-  canvas.addEventListener("pointerup", () => {
-
-    drawing = false;
-
-  });
-
 }
 
 
-let answerReady = false;
-let paperReady = false;
-
-
-// saat mulai belajar
-function startLesson() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("lesson").style.display = "block";
-
-  if (!answerReady) {
-    setupCanvas("answerCanvas");
-    answerReady = true;
-  }
+function goHome() {
+  hideAll();
+  document.getElementById("home").classList.remove("hidden");
 }
 
 
-// saat buka kertas
-function openPaper() {
-  document.getElementById("paper").style.display = "block";
-
-  if (!paperReady) {
-    setupCanvas("canvas");
-    paperReady = true;
-  }
+function showChat() {
+  hideAll();
+  document.getElementById("chat").classList.remove("hidden");
 }
-let currentQuestion = 1;
 
 
-let questions = [
-  {
-    text: "Hitung nilai x:",
-    question: "2x + 5 = 15"
-  },
-  {
-    text: "Hitung nilai y:",
-    question: "3y + 4 = 19"
-  },
-  {
-    text: "Hitung nilai a:",
-    question: "5a - 10 = 20"
-  }
+// =======================
+// TES KEMAMPUAN
+// =======================
+
+let testNumber = 0;
+
+let testQuestions = [
+  "Berapa hasil dari 5 + 7?",
+  "Hitung luas persegi dengan sisi 8 cm",
+  "Jika x + 5 = 12, berapa nilai x?"
 ];
 
 
-function nextQuestion() {
+function startTest() {
+  hideAll();
+  document.getElementById("test").classList.remove("hidden");
 
-  currentQuestion++;
+  testNumber = 0;
+  showTest();
+}
 
 
-  if (currentQuestion > questions.length) {
-    alert("Sesi selesai!");
+function showTest() {
+  document.getElementById("testQuestion").innerText =
+  testQuestions[testNumber];
+}
+
+
+function nextTest() {
+
+  testNumber++;
+
+  if(testNumber >= testQuestions.length){
+
+    alert("Tes selesai!");
+    startLesson();
+
     return;
   }
 
-
-  document.getElementById("questionNumber").innerText =
-    "Soal " + currentQuestion + "/" + questions.length;
-
-
-  document.getElementById("questionText").innerText =
-    questions[currentQuestion - 1].text;
+  showTest();
+}
 
 
-  document.getElementById("question").innerText =
-    questions[currentQuestion - 1].question;
 
 
-  // hapus jawaban lama
-  let canvas = document.getElementById("answerCanvas");
-  let ctx = canvas.getContext("2d");
+// =======================
+// BELAJAR
+// =======================
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+let questions = [
+ {
+  text:"Hitung nilai x:",
+  q:"2x + 5 = 15"
+ },
+ {
+  text:"Hitung nilai y:",
+  q:"3y + 4 = 19"
+ },
+ {
+  text:"Hitung nilai a:",
+  q:"5a - 10 = 20"
+ }
+];
+
+
+let current = 0;
+
+
+function startLesson(){
+
+ hideAll();
+
+ document.getElementById("lesson")
+ .classList.remove("hidden");
+
+
+ current = 0;
+
+ showQuestion();
+
+ startTimer();
 
 }
+
+
+
+function showQuestion(){
+
+ document.getElementById("number")
+ .innerText =
+ "Soal " + (current+1) + "/" + questions.length;
+
+
+ document.getElementById("questionText")
+ .innerText =
+ questions[current].text;
+
+
+ document.getElementById("question")
+ .innerText =
+ questions[current].q;
+
+
+ clearCanvas(answerCanvas);
+
+}
+
+
+
+function nextQuestion(){
+
+ current++;
+
+
+ if(current >= questions.length){
+
+  showResult();
+
+  return;
+
+ }
+
+
+ showQuestion();
+
+}
+
+
+
+
+// =======================
+// TIMER
+// =======================
+
+
+let seconds = 0;
+let timer;
+
+
+function startTimer(){
+
+ clearInterval(timer);
+
+ seconds = 0;
+
+
+ timer=setInterval(()=>{
+
+ seconds++;
+
+
+ let m=Math
