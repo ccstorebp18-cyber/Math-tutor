@@ -1,194 +1,229 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Math Tutor AI</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angka — Belajar Matematika dengan AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<!-- HALAMAN UTAMA -->
-<div id="home" class="page">
+<!-- ======================= HALAMAN UTAMA ======================= -->
+<main id="page-home" class="page page-active">
+  <div class="paper-texture"></div>
 
-<h1>📚 Math Tutor AI</h1>
+  <header class="home-header">
+    <div class="brand">
+      <span class="brand-mark">∑</span>
+      <span class="brand-name">Angka</span>
+    </div>
+    <p class="brand-tag">teman belajar matematikamu</p>
+  </header>
 
-<button onclick="startTest()">Tes Kemampuan</button>
-<button onclick="startLesson()">Mulai Belajar</button>
-<button onclick="showChat()">💬 Chat AI</button>
+  <section class="hero">
+    <p class="hero-eyebrow">— ditemani AI, selangkah demi selangkah</p>
+    <h1 class="hero-title">Matematika jadi<br><span class="hero-underline">masuk akal</span>.</h1>
+    <p class="hero-sub">Angka mengenali level kemampuanmu lewat tes singkat, lalu menyusun soal yang pas — tidak terlalu mudah, tidak terlalu sulit.</p>
+  </section>
 
+  <section class="menu-cards">
+    <button class="menu-card card-test" id="btn-goto-test" data-index="01">
+      <span class="card-index">01</span>
+      <span class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none"><path d="M14 6H30L38 14V42H10V6H14Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M30 6V14H38" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M17 24L21 28L31 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="card-title">Tes Kemampuan</span>
+      <span class="card-desc">Cari tahu ada di level mana kemampuanmu sekarang, dalam 5 menit.</span>
+      <span class="card-arrow">→</span>
+    </button>
+
+    <button class="menu-card card-learn" id="btn-goto-learn" data-index="02">
+      <span class="card-index">02</span>
+      <span class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none"><path d="M6 12C6 12 12 8 18 8C24 8 24 12 24 12V38C24 38 24 34 18 34C12 34 6 38 6 38V12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M42 12C42 12 36 8 30 8C24 8 24 12 24 12V38C24 38 24 34 30 34C36 34 42 38 42 38V12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="card-title">Mulai Belajar</span>
+      <span class="card-desc">Latihan soal yang disusun AI sesuai levelmu, lengkap dengan penilaian.</span>
+      <span class="card-arrow">→</span>
+    </button>
+
+    <button class="menu-card card-chat" id="btn-goto-chat" data-index="03">
+      <span class="card-index">03</span>
+      <span class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none"><path d="M6 10H42V32H16L8 40V32H6V10Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="16" cy="21" r="1.8" fill="currentColor"/><circle cx="24" cy="21" r="1.8" fill="currentColor"/><circle cx="32" cy="21" r="1.8" fill="currentColor"/></svg>
+      </span>
+      <span class="card-title">Chat AI</span>
+      <span class="card-desc">Bingung soal tertentu? Tanya langsung, kapan saja.</span>
+      <span class="card-arrow">→</span>
+    </button>
+  </section>
+
+  <section class="level-status" id="level-status-box" hidden>
+    <span class="level-status-label">Level kamu saat ini</span>
+    <span class="level-status-value" id="level-status-value">—</span>
+  </section>
+</main>
+
+<!-- ======================= TES KEMAMPUAN ======================= -->
+<main id="page-test" class="page">
+  <div class="quiz-topbar">
+    <button class="btn-back" data-go="home" aria-label="Kembali">←</button>
+    <div class="quiz-progress">
+      <span id="test-progress-label">Soal 1/8</span>
+      <div class="progress-track"><div class="progress-fill" id="test-progress-fill"></div></div>
+    </div>
+    <div class="quiz-tools">
+      <button class="tool-btn" id="test-open-paper" aria-label="Buka kertas coret-coret">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 3H15L19 7V21H6V3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15 3V7H19" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="tool-timer" id="test-timer">00:00</span>
+    </div>
+  </div>
+
+  <section class="quiz-body">
+    <p class="quiz-eyebrow" id="test-eyebrow">Menentukan level — soal pemanasan</p>
+    <div class="quiz-card">
+      <p class="quiz-question" id="test-question">Memuat soal…</p>
+      <div class="quiz-answer-wrap">
+        <label class="quiz-answer-label" for="test-answer-input">Jawaban</label>
+        <input type="text" id="test-answer-input" class="quiz-answer-input" placeholder="tulis jawabanmu di sini" autocomplete="off" inputmode="text">
+      </div>
+    </div>
+  </section>
+
+  <div class="quiz-footer">
+    <button class="btn-primary" id="test-next-btn">Selanjutnya</button>
+  </div>
+</main>
+
+<!-- ======================= MULAI BELAJAR ======================= -->
+<main id="page-learn-intro" class="page">
+  <div class="quiz-topbar">
+    <button class="btn-back" data-go="home" aria-label="Kembali">←</button>
+    <div></div>
+    <div></div>
+  </div>
+  <section class="intro-body">
+    <p class="hero-eyebrow">— sesi latihan</p>
+    <h2 class="intro-title">Siap berlatih?</h2>
+    <p class="intro-level-line">Level saat ini: <strong id="intro-level-value">Belum dites</strong></p>
+    <p class="intro-desc">Angka akan menyusun 10 soal yang sesuai levelmu. Kerjakan santai, waktumu akan dicatat supaya kamu tahu progresmu — bukan untuk terburu-buru.</p>
+    <button class="btn-primary btn-large" id="learn-start-btn">Mulai 10 Soal</button>
+  </section>
+</main>
+
+<main id="page-learn" class="page">
+  <div class="quiz-topbar">
+    <button class="btn-back" data-go="home" aria-label="Kembali">←</button>
+    <div class="quiz-progress">
+      <span id="learn-progress-label">Soal 1/10</span>
+      <div class="progress-track"><div class="progress-fill" id="learn-progress-fill"></div></div>
+    </div>
+    <div class="quiz-tools">
+      <button class="tool-btn" id="learn-open-paper" aria-label="Buka kertas coret-coret">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 3H15L19 7V21H6V3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15 3V7H19" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="tool-timer" id="learn-timer">00:00</span>
+    </div>
+  </div>
+
+  <section class="quiz-body">
+    <p class="quiz-eyebrow" id="learn-eyebrow">Aljabar dasar</p>
+    <div class="quiz-card">
+      <p class="quiz-question" id="learn-question">Memuat soal…</p>
+      <div class="quiz-answer-wrap">
+        <label class="quiz-answer-label" for="learn-answer-input">Jawaban</label>
+        <input type="text" id="learn-answer-input" class="quiz-answer-input" placeholder="tulis jawabanmu di sini" autocomplete="off" inputmode="text">
+      </div>
+    </div>
+  </section>
+
+  <div class="quiz-footer">
+    <button class="btn-primary" id="learn-next-btn">Selanjutnya</button>
+  </div>
+</main>
+
+<!-- ======================= HALAMAN HASIL ======================= -->
+<main id="page-result" class="page">
+  <div class="quiz-topbar">
+    <button class="btn-back" data-go="home" aria-label="Kembali">←</button>
+    <div></div>
+    <div></div>
+  </div>
+  <section class="result-body">
+    <p class="hero-eyebrow" id="result-eyebrow">— hasil sesi</p>
+    <h2 class="result-title" id="result-title">Kerja bagus!</h2>
+
+    <div class="result-stats">
+      <div class="stat-block">
+        <span class="stat-value" id="result-score">0</span>
+        <span class="stat-label">Nilai</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-value" id="result-correct">0/10</span>
+        <span class="stat-label">Jawaban benar</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-value" id="result-time">00:00</span>
+        <span class="stat-label">Total waktu</span>
+      </div>
+    </div>
+
+    <div class="result-advice" id="result-advice">
+      <p class="result-advice-label">Catatan dari Angka</p>
+      <p class="result-advice-text" id="result-advice-text">—</p>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn-primary" id="result-retry-btn">Latihan Lagi</button>
+      <button class="btn-secondary" data-go="home">Kembali ke Beranda</button>
+    </div>
+  </section>
+</main>
+
+<!-- ======================= CHAT AI ======================= -->
+<main id="page-chat" class="page">
+  <div class="chat-topbar">
+    <button class="btn-back" data-go="home" aria-label="Kembali">←</button>
+    <div class="chat-title-wrap">
+      <span class="chat-title">Chat AI</span>
+      <span class="chat-subtitle">Tanya apa saja soal matematika</span>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="chat-messages" id="chat-messages"></div>
+
+  <form class="chat-input-bar" id="chat-form">
+    <input type="text" id="chat-input" class="chat-input" placeholder="Tulis pertanyaanmu…" autocomplete="off">
+    <button type="submit" class="chat-send-btn" aria-label="Kirim">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 12L20 4L13 20L11 13L4 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    </button>
+  </form>
+</main>
+
+<!-- ======================= KERTAS CORET-CORET (overlay) ======================= -->
+<div id="scratch-overlay" class="scratch-overlay" hidden>
+  <div class="scratch-toolbar">
+    <button class="scratch-tool active" id="tool-pencil" aria-label="Pensil">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 20L4.8 16.2L15.2 5.8C15.8 5.2 16.8 5.2 17.4 5.8L18.2 6.6C18.8 7.2 18.8 8.2 18.2 8.8L7.8 19.2L4 20Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span>Pensil</span>
+    </button>
+    <button class="scratch-tool" id="tool-eraser" aria-label="Penghapus">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="7" rx="1.5" transform="rotate(-10 5 11)" stroke="currentColor" stroke-width="1.6"/><path d="M9 5L16 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>Hapus</span>
+    </button>
+    <button class="scratch-tool" id="tool-clear">
+      <span>Bersihkan semua</span>
+    </button>
+    <button class="scratch-close" id="scratch-close-btn" aria-label="Tutup kertas coret-coret">✕</button>
+  </div>
+  <canvas id="scratch-canvas"></canvas>
 </div>
-
-
-
-<!-- TES KEMAMPUAN -->
-<div id="test" class="page hidden">
-
-<h2>Tes Kemampuan</h2>
-
-<p id="testQuestion">
-Berapa hasil dari 5 + 7?
-</p>
-
-<canvas id="testCanvas"></canvas>
-
-<button onclick="nextTest()">Selanjutnya</button>
-
-</div>
-
-
-
-
-<!-- BELAJAR -->
-<div id="lesson" class="page hidden">
-
-
-<div class="top">
-
-<span id="number">
-Soal 1/10
-</span>
-
-
-<button onclick="openPaper()">📄</button>
-
-
-<span>
-⏱ <span id="timer">00:00</span>
-</span>
-
-</div>
-
-
-
-<h2 id="questionText">
-Hitung nilai x:
-</h2>
-
-<h1 id="question">
-2x + 5 = 15
-</h1>
-
-
-<h3>Jawaban:</h3>
-
-
-<canvas id="answerCanvas"></canvas>
-
-
-
-<button onclick="nextQuestion()">
-Selanjutnya
-</button>
-
-
-</div>
-
-
-
-
-
-<!-- KERTAS CORETAN -->
-
-<div id="paper" class="paper hidden">
-
-
-<button class="close" onclick="closePaper()">
-✕
-</button>
-
-
-<h2>Kertas Coretan</h2>
-
-
-<div class="tools">
-
-<button onclick="setPen()">
-✏️
-</button>
-
-
-<button onclick="setEraser()">
-🧽
-</button>
-
-</div>
-
-
-<canvas id="paperCanvas"></canvas>
-
-
-</div>
-
-
-
-
-
-<!-- HASIL -->
-
-<div id="result" class="page hidden">
-
-
-<h1>Hasil Belajar</h1>
-
-
-<h2 id="score">
-Nilai: -
-</h2>
-
-
-<p id="feedback">
-Saran AI akan muncul di sini.
-</p>
-
-
-<button>
-🏠 Halaman Utama
-</button>
-
-
-<button onclick="showChat()">
-💬 Chat AI
-</button>
-
-
-<button onclick="startLesson()">
-▶ Lanjut Belajar
-</button>
-
-
-</div>
-
-
-
-
-
-
-<!-- CHAT -->
-
-<div id="chat" class="page hidden">
-
-
-<h1>Chat AI</h1>
-
-
-<textarea placeholder="Tanyakan sesuatu..."></textarea>
-
-
-<button>
-Kirim
-</button>
-
-
-<button onclick="goHome()">
-Kembali
-</button>
-
-
-</div>
-
-
 
 <script src="script.js"></script>
-
 </body>
 </html>
