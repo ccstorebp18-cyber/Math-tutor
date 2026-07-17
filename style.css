@@ -713,9 +713,14 @@ input {
   inset: 0;
   background: var(--paper);
   z-index: 100;
-  display: flex;
   flex-direction: column;
   animation: page-in 0.25s ease;
+}
+.scratch-overlay[hidden] {
+  display: none;
+}
+.scratch-overlay:not([hidden]) {
+  display: flex;
 }
 .scratch-toolbar {
   display: flex;
