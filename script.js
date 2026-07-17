@@ -492,6 +492,9 @@
       difficulty: state.test.currentDifficulty,
       topicLabel: q.topicLabel,
       timeMs,
+      question: q.question,
+      userAnswer: userAnswer || "(tidak dijawab)",
+      correctAnswer: q.answer,
     });
 
     // adaptif: kalau benar naikkan sedikit kesulitan, kalau salah turunkan
@@ -547,6 +550,11 @@
     retryBtn.onclick = () => {
       showPage("page-learn-intro");
       renderLearnIntro();
+    };
+
+    const reviewBtn = document.getElementById("result-review-btn");
+    reviewBtn.onclick = () => {
+      openReviewPage("Tes Kemampuan", state.test.results);
     };
 
     showPage("page-result");
@@ -621,6 +629,9 @@
       correct,
       topicLabel: q.topicLabel,
       timeMs,
+      question: q.question,
+      userAnswer: userAnswer || "(tidak dijawab)",
+      correctAnswer: q.answer,
     });
 
     state.learn.currentIndex++;
@@ -653,6 +664,11 @@
       renderLearnIntro();
     };
 
+    const reviewBtn = document.getElementById("result-review-btn");
+    reviewBtn.onclick = () => {
+      openReviewPage("Sesi Belajar", state.learn.results);
+    };
+
     showPage("page-result");
   }
 
@@ -662,6 +678,70 @@
   });
 
   document.getElementById("learn-open-paper").addEventListener("click", () => openScratchPaper());
+
+  /* =========================================================
+     6b. PEMBAHASAN (review soal, jawaban, & jawaban benar)
+     ========================================================= */
+  const reviewSubtitle = document.getElementById("review-subtitle");
+  const reviewBody = document.getElementById("review-body");
+  const reviewBackBtn = document.getElementById("review-back-btn");
+
+  let reviewCameFromResult = true;
+
+  function openReviewPage(label, results) {
+    reviewSubtitle.textContent = `${label} — ${results.length} soal`;
+    reviewBody.innerHTML = "";
+
+    results.forEach((r, i) => {
+      const item = document.createElement("div");
+      item.className = `review-item ${r.correct ? "review-correct" : "review-wrong"}`;
+
+      const status = document.createElement("div");
+      status.className = "review-status";
+      status.innerHTML = r.correct
+        ? `<span class="review-badge review-badge-correct">✓ Benar</span>`
+        : `<span class="review-badge review-badge-wrong">✕ Salah</span>`;
+
+      const num = document.createElement("span");
+      num.className = "review-number";
+      num.textContent = `Soal ${i + 1}`;
+      status.prepend(num);
+
+      const question = document.createElement("p");
+      question.className = "review-question";
+      question.textContent = r.question || "—";
+
+      const answers = document.createElement("div");
+      answers.className = "review-answers";
+      answers.innerHTML = `
+        <div class="review-answer-row">
+          <span class="review-answer-label">Jawabanmu</span>
+          <span class="review-answer-value ${r.correct ? "" : "review-answer-wrong"}">${escapeHtml(r.userAnswer || "—")}</span>
+        </div>
+        <div class="review-answer-row">
+          <span class="review-answer-label">Jawaban benar</span>
+          <span class="review-answer-value review-answer-correct">${escapeHtml(r.correctAnswer || "—")}</span>
+        </div>
+      `;
+
+      item.appendChild(status);
+      item.appendChild(question);
+      item.appendChild(answers);
+      reviewBody.appendChild(item);
+    });
+
+    showPage("page-review");
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  reviewBackBtn.addEventListener("click", () => {
+    showPage("page-result");
+  });
 
   /* =========================================================
      7. CHAT AI
