@@ -60,6 +60,7 @@
         question: `Hitung hasil dari:\n${a} ${op} ${b} = ...`,
         answer: String(answer),
         topicLabel: "Aritmatika dasar",
+        topicKey: "aritmatika",
       };
     }
 
@@ -71,7 +72,7 @@
       const sign = pick(["+", "-"]);
       const c = sign === "+" ? a * x + b : a * x - b;
       const question = `Hitung nilai x:\n${a}x ${sign} ${b} = ${c}`;
-      return { question, answer: String(x), topicLabel: "Aljabar linear" };
+      return { question, answer: String(x), topicLabel: "Aljabar linear", topicKey: "aljabar_linear" };
     }
 
     function genPecahan(difficulty) {
@@ -92,6 +93,7 @@
         question: `Hitung dan sederhanakan:\n${n1}/${d1} ${op} ${n2}/${d2} = ...\n(tulis dalam bentuk a/b, contoh: 3/4)`,
         answer: `${simpNum}/${simpDen}`,
         topicLabel: "Pecahan",
+        topicKey: "pecahan",
         altAnswers: simpDen === 1 ? [String(simpNum)] : [],
       };
     }
@@ -107,6 +109,7 @@
         question: `Berapa ${persen}% dari ${total}?`,
         answer: String(answer),
         topicLabel: "Persentase",
+        topicKey: "persentase",
       };
     }
 
@@ -123,6 +126,7 @@
           question: `Sebuah persegi memiliki sisi ${s} cm.\nBerapa keliling persegi tersebut? (dalam cm)`,
           answer: String(s * 4),
           topicLabel: "Geometri — keliling",
+          topicKey: "keliling",
         };
       } else if (shape === "persegi panjang") {
         const p = randInt(3, 30), l = randInt(2, p - 1 || 2);
@@ -130,6 +134,7 @@
           question: `Sebuah persegi panjang memiliki panjang ${p} cm dan lebar ${l} cm.\nBerapa kelilingnya? (dalam cm)`,
           answer: String(2 * (p + l)),
           topicLabel: "Geometri — keliling",
+          topicKey: "keliling",
         };
       } else {
         const s = randInt(3, 25);
@@ -137,6 +142,7 @@
           question: `Sebuah segitiga sama sisi memiliki panjang sisi ${s} cm.\nBerapa kelilingnya? (dalam cm)`,
           answer: String(s * 3),
           topicLabel: "Geometri — keliling",
+          topicKey: "keliling",
         };
       }
     }
@@ -148,6 +154,7 @@
           question: `Sebuah persegi memiliki sisi ${s} cm.\nBerapa luasnya? (dalam cm²)`,
           answer: String(s * s),
           topicLabel: "Geometri — luas",
+          topicKey: "luas",
         };
       } else if (difficulty === "menengah") {
         const p = randInt(4, 20), l = randInt(2, 15);
@@ -155,6 +162,7 @@
           question: `Sebuah persegi panjang memiliki panjang ${p} cm dan lebar ${l} cm.\nBerapa luasnya? (dalam cm²)`,
           answer: String(p * l),
           topicLabel: "Geometri — luas",
+          topicKey: "luas",
         };
       } else {
         const a = randInt(4, 24), t = randInt(3, 20);
@@ -162,6 +170,7 @@
           question: `Sebuah segitiga memiliki alas ${a} cm dan tinggi ${t} cm.\nBerapa luasnya? (dalam cm²)`,
           answer: String((a * t) / 2),
           topicLabel: "Geometri — luas",
+          topicKey: "luas",
         };
       }
     }
@@ -178,6 +187,7 @@
         question,
         answer: String(Math.min(r1, r2)),
         topicLabel: "Aljabar — persamaan kuadrat",
+        topicKey: "kuadrat",
       };
     }
 
@@ -190,6 +200,7 @@
         question: `Perbandingan uang Andi dan Budi adalah ${a} : ${b}.\nJika uang Andi adalah ${totalA}, berapa uang Budi?`,
         answer: String(b * mult),
         topicLabel: "Perbandingan (rasio)",
+        topicKey: "perbandingan",
       };
     }
 
@@ -348,6 +359,175 @@
       return "Aku masih belajar memahami pertanyaan yang lebih kompleks di versi ini. Coba tanyakan topik seperti pecahan, aljabar, persentase, keliling, luas, atau persamaan kuadrat — atau kirim soal spesifiknya, nanti aku bantu jelaskan langkah-langkahnya.";
     }
 
+    /* ---------------------------------------------------
+       Penjelasan cara mengerjakan (fitur "Bantu Jelaskan")
+       Membuat CONTOH SOAL BARU yang sejenis (bukan soal yang
+       sedang dikerjakan user) lengkap dengan langkah-langkah.
+    --------------------------------------------------- */
+    function explainAritmatika(difficulty) {
+      const ex = genAritmatikaDasar(difficulty);
+      const q = ex.question.split("\n")[1].replace(" = ...", "");
+      const [a, op, b] = q.split(" ");
+      const steps = [];
+      if (op === "+") {
+        steps.push({ title: "Kenali operasinya", text: `Ini soal penjumlahan biasa: ${a} ditambah ${b}.` });
+        steps.push({ title: "Jumlahkan", text: `${a} + ${b} = ${ex.answer}` });
+      } else if (op === "-") {
+        steps.push({ title: "Kenali operasinya", text: `Ini soal pengurangan: ${a} dikurangi ${b}.` });
+        steps.push({ title: "Kurangkan", text: `${a} - ${b} = ${ex.answer}` });
+      } else {
+        steps.push({ title: "Kenali operasinya", text: `Ini soal perkalian: ${a} dikali ${b}.` });
+        steps.push({ title: "Kalikan", text: `${a} × ${b} = ${ex.answer}` });
+      }
+      steps.push({ title: "Selesai", text: `Jadi hasilnya adalah ${ex.answer}. Coba terapkan langkah yang sama pada soalmu — kenali dulu operasinya (+, -, atau ×), lalu hitung sesuai urutan angkanya.` });
+      return { question: ex.question, steps };
+    }
+
+    function explainAljabarLinear(difficulty) {
+      const ex = genAljabarLinear(difficulty);
+      const line = ex.question.split("\n")[1]; // "ax + b = c" atau "ax - b = c"
+      const match = line.match(/(-?\d+)x\s([+-])\s(\d+)\s=\s(-?\d+)/);
+      const [, a, sign, b, c] = match;
+      const oppSign = sign === "+" ? "-" : "+";
+      const step2Result = sign === "+" ? Number(c) - Number(b) : Number(c) + Number(b);
+      const steps = [
+        { title: "Tulis ulang persamaannya", text: `${a}x ${sign} ${b} = ${c}` },
+        { title: `Pindahkan ${b} ke ruas kanan`, text: `Karena di kiri "${sign} ${b}", saat dipindah tandanya berubah jadi "${oppSign}".\n${a}x = ${c} ${oppSign} ${b}\n${a}x = ${step2Result}` },
+        { title: `Bagi kedua ruas dengan ${a}`, text: `x = ${step2Result} ÷ ${a}\nx = ${ex.answer}` },
+      ];
+      return { question: ex.question, steps };
+    }
+
+    function explainPecahan(difficulty) {
+      const ex = genPecahan(difficulty);
+      const match = ex.question.match(/(\d+)\/(\d+)\s([+-])\s(\d+)\/(\d+)/);
+      const [, n1, d1, op, n2, d2] = match;
+      const den = Number(d1) * Number(d2);
+      const newN1 = Number(n1) * Number(d2);
+      const newN2 = Number(n2) * Number(d1);
+      const opWord = op === "+" ? "jumlahkan" : "kurangkan";
+      const rawNum = op === "+" ? newN1 + newN2 : newN1 - newN2;
+      const g = gcd(Math.abs(rawNum), den);
+      const steps = [
+        { title: "Samakan penyebutnya", text: `Kalikan silang penyebutnya: ${d1} × ${d2} = ${den}\nJadi penyebut barunya adalah ${den}.` },
+        { title: "Sesuaikan pembilangnya", text: `${n1}/${d1} menjadi ${newN1}/${den} (dikali ${d2})\n${n2}/${d2} menjadi ${newN2}/${den} (dikali ${d1})` },
+        { title: `${opWord === "jumlahkan" ? "Jumlahkan" : "Kurangkan"} pembilangnya`, text: `${newN1} ${op} ${newN2} = ${rawNum}\nHasilnya: ${rawNum}/${den}` },
+        { title: "Sederhanakan dengan FPB", text: g > 1
+            ? `FPB dari ${rawNum} dan ${den} adalah ${g}.\nBagi keduanya dengan ${g}: ${rawNum}/${g} = ${ex.answer.split("/")[0]}, ${den}/${g} = ${ex.answer.split("/")[1] || 1}\nHasil akhir: ${ex.answer}`
+            : `FPB dari ${rawNum} dan ${den} adalah 1, jadi pecahan ${rawNum}/${den} sudah paling sederhana.\nHasil akhir: ${ex.answer}` },
+      ];
+      return { question: ex.question, steps };
+    }
+
+    function explainPersentase(difficulty) {
+      const ex = genPersentase(difficulty);
+      const match = ex.question.match(/(\d+)% dari (\d+)/);
+      const [, persen, total] = match;
+      const steps = [
+        { title: "Ubah persen jadi pecahan", text: `${persen}% = ${persen}/100` },
+        { title: "Kalikan dengan angkanya", text: `${persen}/100 × ${total} = (${persen} × ${total}) ÷ 100` },
+        { title: "Hitung hasilnya", text: `(${persen} × ${total}) ÷ 100 = ${ex.answer}` },
+      ];
+      return { question: ex.question, steps };
+    }
+
+    function explainKeliling(difficulty) {
+      const ex = genGeometriKeliling(difficulty);
+      let steps;
+      if (ex.question.includes("persegi panjang")) {
+        const m = ex.question.match(/panjang (\d+) cm dan lebar (\d+) cm/);
+        steps = [
+          { title: "Ingat rumus keliling persegi panjang", text: `Keliling = 2 × (panjang + lebar)` },
+          { title: "Masukkan angkanya", text: `Keliling = 2 × (${m[1]} + ${m[2]})\nKeliling = 2 × ${Number(m[1]) + Number(m[2])}` },
+          { title: "Hitung hasil akhirnya", text: `Keliling = ${ex.answer} cm` },
+        ];
+      } else if (ex.question.includes("segitiga")) {
+        const m = ex.question.match(/sisi (\d+) cm/);
+        steps = [
+          { title: "Ingat rumus keliling segitiga sama sisi", text: `Karena ketiga sisinya sama panjang, Keliling = 3 × sisi` },
+          { title: "Masukkan angkanya", text: `Keliling = 3 × ${m[1]}` },
+          { title: "Hitung hasil akhirnya", text: `Keliling = ${ex.answer} cm` },
+        ];
+      } else {
+        const m = ex.question.match(/sisi (\d+) cm/);
+        steps = [
+          { title: "Ingat rumus keliling persegi", text: `Karena keempat sisinya sama panjang, Keliling = 4 × sisi` },
+          { title: "Masukkan angkanya", text: `Keliling = 4 × ${m[1]}` },
+          { title: "Hitung hasil akhirnya", text: `Keliling = ${ex.answer} cm` },
+        ];
+      }
+      return { question: ex.question, steps };
+    }
+
+    function explainLuas(difficulty) {
+      const ex = genGeometriLuas(difficulty);
+      let steps;
+      if (ex.question.includes("persegi panjang")) {
+        const m = ex.question.match(/panjang (\d+) cm dan lebar (\d+) cm/);
+        steps = [
+          { title: "Ingat rumus luas persegi panjang", text: `Luas = panjang × lebar` },
+          { title: "Masukkan angkanya", text: `Luas = ${m[1]} × ${m[2]}` },
+          { title: "Hitung hasil akhirnya", text: `Luas = ${ex.answer} cm²` },
+        ];
+      } else if (ex.question.includes("segitiga")) {
+        const m = ex.question.match(/alas (\d+) cm dan tinggi (\d+) cm/);
+        steps = [
+          { title: "Ingat rumus luas segitiga", text: `Luas = (alas × tinggi) ÷ 2` },
+          { title: "Masukkan angkanya", text: `Luas = (${m[1]} × ${m[2]}) ÷ 2\nLuas = ${Number(m[1]) * Number(m[2])} ÷ 2` },
+          { title: "Hitung hasil akhirnya", text: `Luas = ${ex.answer} cm²` },
+        ];
+      } else {
+        const m = ex.question.match(/sisi (\d+) cm/);
+        steps = [
+          { title: "Ingat rumus luas persegi", text: `Luas = sisi × sisi` },
+          { title: "Masukkan angkanya", text: `Luas = ${m[1]} × ${m[1]}` },
+          { title: "Hitung hasil akhirnya", text: `Luas = ${ex.answer} cm²` },
+        ];
+      }
+      return { question: ex.question, steps };
+    }
+
+    function explainKuadrat(difficulty) {
+      const ex = genAljabarKuadratSederhana(difficulty);
+      const line = ex.question.split("\n")[1];
+      const steps = [
+        { title: "Kenali bentuknya", text: `Persamaan berbentuk x² + bx + c = 0 biasanya bisa difaktorkan menjadi (x - p)(x - q) = 0` },
+        { title: "Cari dua angka p dan q", text: `Cari dua angka yang jika dikalikan menghasilkan nilai c, dan jika dijumlahkan menghasilkan nilai b (dengan tanda yang sesuai).` },
+        { title: "Tulis bentuk faktor", text: `Setelah ketemu p dan q, tulis: (x - p)(x - q) = 0` },
+        { title: "Cari akar-akarnya", text: `Nilai x yang memenuhi adalah x = p atau x = q.\nJawaban yang diminta adalah akar terkecil di antara keduanya.` },
+      ];
+      return { question: ex.question, steps };
+    }
+
+    function explainPerbandingan(difficulty) {
+      const ex = genPerbandingan(difficulty);
+      const m = ex.question.match(/adalah (\d+) : (\d+)[\s\S]*adalah (\d+)/);
+      const [, a, b, totalA] = m;
+      const mult = Number(totalA) / Number(a);
+      const steps = [
+        { title: "Tulis perbandingannya", text: `Perbandingan = ${a} : ${b}` },
+        { title: "Cari faktor pengali", text: `Karena nilai pertama diketahui ${totalA}, cari pengali: ${totalA} ÷ ${a} = ${mult}` },
+        { title: "Kalikan nilai kedua dengan faktor yang sama", text: `${b} × ${mult} = ${ex.answer}` },
+      ];
+      return { question: ex.question, steps };
+    }
+
+    const EXPLAINERS = {
+      aritmatika: explainAritmatika,
+      aljabar_linear: explainAljabarLinear,
+      pecahan: explainPecahan,
+      persentase: explainPersentase,
+      keliling: explainKeliling,
+      luas: explainLuas,
+      kuadrat: explainKuadrat,
+      perbandingan: explainPerbandingan,
+    };
+
+    function generateExplanation(topicKey, difficulty) {
+      const fn = EXPLAINERS[topicKey] || explainAritmatika;
+      return fn(difficulty || "menengah");
+    }
+
     return {
       generateQuestion,
       generateTestQuestion,
@@ -355,6 +535,7 @@
       evaluateTestResult,
       evaluateSession,
       getChatReply,
+      generateExplanation,
     };
   })();
 
@@ -432,8 +613,9 @@
 
   function startTimer(container, displayEl) {
     container.startTime = Date.now();
+    container.elapsedBeforePause = container.elapsedBeforePause || 0;
     container.timerInterval = setInterval(() => {
-      const elapsed = (Date.now() - container.startTime) / 1000;
+      const elapsed = container.elapsedBeforePause + (Date.now() - container.startTime) / 1000;
       displayEl.textContent = formatTime(elapsed);
     }, 500);
   }
@@ -443,6 +625,25 @@
       clearInterval(container.timerInterval);
       container.timerInterval = null;
     }
+  }
+
+  // Jeda timer TANPA mereset akumulasi waktu — dipakai saat membuka
+  // halaman "Bantu Jelaskan" supaya waktu pengerjaan tidak ikut terhitung.
+  function pauseTimer(container) {
+    if (container.timerInterval) {
+      container.elapsedBeforePause = (container.elapsedBeforePause || 0) + (Date.now() - container.startTime) / 1000;
+      clearInterval(container.timerInterval);
+      container.timerInterval = null;
+    }
+  }
+
+  // Lanjutkan timer dari akumulasi sebelumnya (tanpa reset ke 0).
+  function resumeTimer(container, displayEl) {
+    container.startTime = Date.now();
+    container.timerInterval = setInterval(() => {
+      const elapsed = container.elapsedBeforePause + (Date.now() - container.startTime) / 1000;
+      displayEl.textContent = formatTime(elapsed);
+    }, 500);
   }
 
   /* =========================================================
@@ -597,6 +798,7 @@
     showPage("page-learn");
     loadLearnQuestion();
     stopTimer(state.learn);
+    state.learn.elapsedBeforePause = 0;
     state.learn.sessionStartTime = Date.now();
     startTimer(state.learn, learnTimerEl);
   });
@@ -645,7 +847,7 @@
 
   function finishLearnSession() {
     stopTimer(state.learn);
-    const totalTimeSec = (Date.now() - state.learn.sessionStartTime) / 1000;
+    const totalTimeSec = (state.learn.elapsedBeforePause || 0) + (Date.now() - state.learn.startTime) / 1000;
     const evalResult = AIEngine.evaluateSession(state.learn.results, totalTimeSec, currentLearnDifficulty());
 
     document.getElementById("result-eyebrow").textContent = "— hasil sesi belajar";
@@ -678,6 +880,51 @@
   });
 
   document.getElementById("learn-open-paper").addEventListener("click", () => openScratchPaper());
+
+  /* =========================================================
+     6a. BANTU JELASKAN (khusus Mulai Belajar, tidak ada di Tes)
+     ========================================================= */
+  const explainSubtitle = document.getElementById("explain-subtitle");
+  const explainQuestionEl = document.getElementById("explain-question");
+  const explainStepsEl = document.getElementById("explain-steps");
+  const explainBackBtn = document.getElementById("explain-back-btn");
+  const explainDoneBtn = document.getElementById("explain-done-btn");
+
+  document.getElementById("learn-open-explain").addEventListener("click", () => {
+    const q = state.learn.currentQuestion;
+    if (!q) return;
+
+    // Jeda timer selama melihat penjelasan — tidak dihitung sebagai waktu jawab.
+    pauseTimer(state.learn);
+
+    const explanation = AIEngine.generateExplanation(q.topicKey, currentLearnDifficulty());
+
+    explainSubtitle.textContent = q.topicLabel;
+    explainQuestionEl.textContent = explanation.question;
+    explainStepsEl.innerHTML = "";
+    explanation.steps.forEach((step, i) => {
+      const item = document.createElement("div");
+      item.className = "explain-step";
+      item.innerHTML = `
+        <span class="explain-step-number">${i + 1}</span>
+        <div class="explain-step-content">
+          <p class="explain-step-title">${escapeHtml(step.title)}</p>
+          <p class="explain-step-text">${escapeHtml(step.text)}</p>
+        </div>
+      `;
+      explainStepsEl.appendChild(item);
+    });
+
+    showPage("page-explain");
+  });
+
+  function backToLearnFromExplain() {
+    showPage("page-learn");
+    resumeTimer(state.learn, learnTimerEl);
+  }
+
+  explainBackBtn.addEventListener("click", backToLearnFromExplain);
+  explainDoneBtn.addEventListener("click", backToLearnFromExplain);
 
   /* =========================================================
      6b. PEMBAHASAN (review soal, jawaban, & jawaban benar)
