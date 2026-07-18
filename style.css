@@ -693,6 +693,111 @@ input {
 }
 
 /* ---------------------------------------------------------
+   Explain page (Bantu Jelaskan)
+--------------------------------------------------------- */
+.explain-body {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+
+.explain-card {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius-lg);
+  padding: 26px 26px 24px 44px;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.explain-card::before {
+  content: "";
+  position: absolute;
+  left: 26px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--red-ink);
+  opacity: 0.3;
+}
+.explain-label {
+  margin: 0 0 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pencil-dark);
+  font-weight: 700;
+}
+.explain-question {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  line-height: 1.6;
+  white-space: pre-line;
+  margin: 0;
+  color: var(--ink);
+}
+
+.explain-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.explain-step {
+  display: flex;
+  gap: 14px;
+  background: var(--white);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+.explain-step-number {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--pencil-tint);
+  color: var(--pencil-dark);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.explain-step-content {
+  flex: 1;
+  padding-top: 3px;
+}
+.explain-step-title {
+  margin: 0 0 4px;
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.explain-step-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  white-space: pre-line;
+}
+.explain-step-math {
+  font-family: var(--font-mono);
+  color: var(--pencil-dark);
+  font-weight: 600;
+}
+
+.explain-note {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+/* ---------------------------------------------------------
    Chat page
 --------------------------------------------------------- */
 #page-chat { display: none; flex-direction: column; height: 100vh; }
