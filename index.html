@@ -123,6 +123,9 @@
       <div class="progress-track"><div class="progress-fill" id="learn-progress-fill"></div></div>
     </div>
     <div class="quiz-tools">
+      <button class="tool-btn" id="learn-open-explain" aria-label="Bantu jelaskan">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M9.5 9.2C9.5 7.8 10.6 6.8 12 6.8C13.4 6.8 14.4 7.7 14.4 9C14.4 10.9 12 10.7 12 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="16.3" r="0.9" fill="currentColor"/></svg>
+      </button>
       <button class="tool-btn" id="learn-open-paper" aria-label="Buka kertas coret-coret">
         <svg viewBox="0 0 24 24" fill="none"><path d="M6 3H15L19 7V21H6V3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15 3V7H19" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
       </button>
@@ -145,6 +148,36 @@
     <button class="btn-primary" id="learn-next-btn">Selanjutnya</button>
   </div>
 </main>
+
+<!-- ======================= BANTU JELASKAN ======================= -->
+<main id="page-explain" class="page">
+  <div class="quiz-topbar">
+    <button class="btn-back" id="explain-back-btn" aria-label="Kembali ke soal">←</button>
+    <div class="review-title-wrap">
+      <span class="review-title">Bantu Jelaskan</span>
+      <span class="review-subtitle" id="explain-subtitle">—</span>
+    </div>
+    <div></div>
+  </div>
+
+  <section class="explain-body">
+    <div class="explain-card">
+      <p class="explain-label">Contoh soal serupa</p>
+      <p class="explain-question" id="explain-question">—</p>
+    </div>
+
+    <div class="explain-steps" id="explain-steps">
+      <!-- diisi oleh JS -->
+    </div>
+
+    <div class="explain-note">
+      Ini contoh soal lain yang sejenis — coba terapkan cara yang sama ke soal yang sedang kamu kerjakan.
+    </div>
+
+    <button class="btn-primary btn-large" id="explain-done-btn">Kembali ke Soal</button>
+  </section>
+</main>
+
 
 <!-- ======================= HALAMAN HASIL ======================= -->
 <main id="page-result" class="page">
